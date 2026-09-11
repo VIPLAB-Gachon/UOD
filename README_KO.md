@@ -316,6 +316,30 @@ python train.py --config configs/uod_resnet50.yaml \
 
 동일한 모델 구조와 클래스 순서가 필요합니다. epoch 수를 바꾸면 남은 cosine LR schedule도 달라질 수 있습니다. GPU 연산의 bitwise 결정성은 보장하지 않습니다. 단일 CPU toy 실행의 epoch-boundary resume는 직접 비교했습니다.
 
+### 공식 YOLOv5l 사전학습 가중치를 사용하는 LLVIP 실험
+
+`train_yolov5_uod.py`는 고정된 upstream YOLOv5 v7.0 소스
+(`third_party/yolov5`, commit `915bbf294bb74c859f0b41f1c23bc395014ea679`)의
+backbone/neck/Detect와 YOLOv5 loss를 사용합니다. 로컬 `yolov5l.pt`에서
+호환되는 COCO 가중치를 옮기며, 클래스 수가 80에서 1로 바뀌는 Detect 출력
+convolution 6개 tensor는 정상적으로 새로 초기화됩니다.
+
+`configs/llvip_yolov5l_pretrained_1280.yaml`은 논문에 공개된 batch 16과
+초기 LR 0.01을 반영한 재현 가설입니다. RTX 6000 Ada 48 GB 실측에서 1280 입력과
+두 NFE를 함께 사용할 때 physical batch 8이 43.21 GiB를 예약했습니다. 따라서
+gradient accumulation 2회로 effective pair batch를 16으로 유지합니다. 논문의 batch가 pair 수인지
+전체 modality image 수인지는 공식 코드가 없어 확인할 수 없습니다.
+
+```bash
+docker compose build uod-train-l1280
+docker compose --profile llvip-l1280 up -d uod-train-l1280
+docker logs -f uod-llvip-yolov5l-1280
+```
+
+공식 YOLOv5 checkpoint는 직렬화된 model object를 포함하므로 불러올 때 Python
+pickle을 사용합니다. 출처를 신뢰할 수 있는 checkpoint만 사용하세요. 이 실험도
+공개되지 않은 UOD-v5 공식 학습 코드의 완전한 복제라고 주장하지 않습니다.
+
 ### 검증
 
 ```bash

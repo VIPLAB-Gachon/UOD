@@ -24,3 +24,38 @@ services:
             - driver: nvidia
               device_ids: ["1"]
               capabilities: [gpu]
+
+  # Opt-in reproduction-oriented LLVIP run. Start with:
+  # docker compose --profile llvip-l1280 up -d uod-train-l1280
+  uod-train-l1280:
+    profiles: ["llvip-l1280"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: uod-reference:torch2.4.1-cu124
+    container_name: uod-llvip-yolov5l-1280
+    working_dir: /workspace/Hari/uod_reference
+    user: "1000:1000"
+    init: true
+    shm_size: "32gb"
+    volumes:
+      - .:/workspace/Hari/uod_reference
+    environment:
+      HOME: /tmp/uod-l1280-home
+      XDG_CACHE_HOME: /tmp/uod-l1280-cache
+      PYTHONUNBUFFERED: "1"
+      CUDA_DEVICE_ORDER: PCI_BUS_ID
+    command:
+      - python
+      - train_yolov5_uod.py
+      - --config
+      - configs/llvip_yolov5l_pretrained_1280.yaml
+      - --device
+      - cuda:0
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["2"]
+              capabilities: [gpu]

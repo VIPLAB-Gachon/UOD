@@ -1,0 +1,59 @@
+# Reproduction-oriented UOD-v5 hypothesis. The paper reports batch=16 and
+# lr0=0.01 but does not publish all implementation details. This run uses the
+# local, trusted COCO-pretrained YOLOv5l checkpoint and pinned YOLOv5 v7.0.
+seed: 2026
+device: cuda:0
+num_workers: 4
+model:
+  weights: ../yolov5l.pt
+  nfe_noise: 0.05
+data:
+  train_manifest: ../data/llvip_uod/train.jsonl
+  val_manifest: ../data/llvip_uod/test.jsonl
+  class_names: [person]
+  image_size: 1280
+  thermal_divisor: 255.0
+  letterbox_fill: 0.4470588235294118
+augmentation:
+  flip_probability: 0.5
+  rgb_brightness: 0.0
+loss:
+  alpha: 1.0
+  margin: 1.0
+  reduction: pixel
+  mask_padding: false
+  detection:
+    box: 0.05
+    cls: 0.5
+    cls_pw: 1.0
+    obj: 1.0
+    obj_pw: 1.0
+    iou_t: 0.20
+    anchor_t: 4.0
+    fl_gamma: 0.0
+    label_smoothing: 0.0
+training:
+  epochs: 100
+  batch_size: 16          # effective PAIR batch requested by the paper
+  micro_batch_size: 8    # measured 43.21 GiB reserved; 2-step accumulation
+  val_batch_size: 1
+  optimizer: SGD
+  lr0: 0.01
+  lrf: 0.01
+  momentum: 0.937
+  weight_decay: 0.0005
+  nominal_batch_size: 64
+  grad_clip: 10.0
+  warmup_epochs: 3.0
+  warmup_momentum: 0.8
+  warmup_bias_lr: 0.1
+  amp: true
+  out_dir: ../runs/llvip_yolov5l_pretrained_1280
+  eval_every: 1
+  save_every: 5
+  log_every: 200
+  best_metric: val/rgbt/map50
+postprocess:
+  score_threshold: 0.001
+  iou_threshold: 0.6
+  max_detections: 300

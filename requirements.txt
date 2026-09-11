@@ -6,3 +6,16 @@ torchvision>=0.19,<1
 numpy>=1.24
 Pillow>=10
 PyYAML>=6
+
+# Pinned YOLOv5 v7.0 runtime (third_party/yolov5). The headless OpenCV build is
+# sufficient for server-side training and avoids pulling GUI libraries.
+gitpython>=3.1
+matplotlib>=3.2.2
+opencv-python-headless>=4.8,<5
+pandas>=1.5,<3
+psutil>=5.9
+requests>=2.23
+scipy>=1.10
+seaborn>=0.12
+thop>=0.1.1
+tqdm>=4.64
