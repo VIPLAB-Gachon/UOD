@@ -1,0 +1,32 @@
+{
+  "scope": "CPU-only export verification; no new training or GPU forward/backward executed",
+  "python_ast_files": 92,
+  "source_and_export_hash_pairs_verified": 176,
+  "exact_original_split_records": {
+    "train": 3360,
+    "val": 420,
+    "test": 420
+  },
+  "checks": [
+    "Python AST and JSON parsing",
+    "all source/export file hashes verified",
+    "materialized manifests exactly match original records in order",
+    "configure --check-only with original weights and common initial",
+    "trainer.validate_config(template, world=2)",
+    "score_residual CPU self-test",
+    "distribution_features CPU self-test (source audit)",
+    "major CLI --help (source audit)"
+  ],
+  "source_run_config_sha256": "9374477e2a1b770f4bce9255b9f8f03d7580ef9567721425d9013dd3820bf9a5",
+  "training_source_modified": false,
+  "repository_copy_checks": [
+    "all 175 included source/export hashes match the prepared snapshot",
+    "Python AST for 92 files and JSON parsing",
+    "configure --check-only against fixed manifests and original common initial",
+    "two-GPU trainer protocol validation",
+    "SC CPU self-test",
+    "boundary feature CPU self-test",
+    "VFL equation parity and finite gradients",
+    "6 main CLI --help entry points"
+  ]
+}

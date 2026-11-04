@@ -1,0 +1,203 @@
+{
+  "seed": 2026,
+  "device": "cuda:0",
+  "num_workers": 8,
+  "model": {
+    "weights": "${PROJECT_ROOT}/weights/yolov5l.pt",
+    "use_nfe": false,
+    "separate_ife": true,
+    "nfe_noise": 0.05,
+    "initial_checkpoint": "${PROJECT_ROOT}/weights/common_initial_continuous_nc6.pt",
+    "initial_checkpoint_sha256": "COMPUTED_BY_CONFIGURE",
+    "localization_distribution": {
+      "bins": 25,
+      "support_min": -2.0,
+      "support_max": 4.0,
+      "decode_chunk_size": 32768
+    }
+  },
+  "data": {
+    "train_manifest": "${MANIFEST_ROOT}/train.jsonl",
+    "val_manifest": "${MANIFEST_ROOT}/val.jsonl",
+    "class_names": [
+      "People",
+      "Car",
+      "Bus",
+      "Lamp",
+      "Motorcycle",
+      "Truck"
+    ],
+    "image_size": 640,
+    "thermal_divisor": 255.0,
+    "letterbox_fill": 0.4470588235294118,
+    "test_manifest": "${MANIFEST_ROOT}/test.jsonl"
+  },
+  "augmentation": {
+    "flip_probability": 0.5,
+    "rgb_brightness": 0.0,
+    "scale_gain": 0.2,
+    "translate_fraction": 0.05,
+    "min_box_size": 2.0,
+    "min_area_ratio": 0.2,
+    "mosaic_probability": 1.0,
+    "mosaic_close_epochs": 10
+  },
+  "loss": {
+    "feature_objective": "hinge",
+    "alpha": 0.1,
+    "alpha_start_epoch": 3.0,
+    "alpha_ramp_epochs": 5.0,
+    "detection": {
+      "box": 0.05,
+      "cls": 0.5,
+      "cls_pw": 1.0,
+      "obj": 1.0,
+      "obj_pw": 1.0,
+      "iou_t": 0.2,
+      "anchor_t": 4.0,
+      "fl_gamma": 0.0,
+      "label_smoothing": 0.0
+    },
+    "localization": {
+      "dfl_weight": 0.01,
+      "min_teacher_iou": 0.7,
+      "min_iou_gap": 0.1,
+      "temperature": 1.0,
+      "edge_gate": "gt_better"
+    }
+  },
+  "training": {
+    "epochs": 200,
+    "lr_schedule_epochs": 200,
+    "batch_size": 16,
+    "micro_batch_size": 8,
+    "val_batch_size": 8,
+    "optimizer": "SGD",
+    "lr0": 0.01,
+    "lrf": 0.01,
+    "momentum": 0.937,
+    "weight_decay": 0.0005,
+    "nominal_batch_size": 16,
+    "grad_clip": 10.0,
+    "warmup_epochs": 3.0,
+    "warmup_momentum": 0.8,
+    "warmup_bias_lr": 0.001,
+    "amp": true,
+    "out_dir": "${PROJECT_ROOT}/training",
+    "eval_every": 1,
+    "save_every": 10,
+    "log_every": 25,
+    "best_metric": "val/rgbt/map50_95",
+    "checkpoint_epochs": [
+      3,
+      10
+    ],
+    "review_epochs": [],
+    "additional_best_metrics": [
+      "val/unimodal_mean/map50_95",
+      "val/rgbt/map50",
+      "val/unimodal_mean/map50"
+    ],
+    "save_initial_checkpoint": true,
+    "audit_batches": 8,
+    "retain_periodic": 2
+  },
+  "postprocess": {
+    "score_threshold": 0.001,
+    "iou_threshold": 0.6,
+    "max_detections": 300,
+    "method": "soft_nms",
+    "soft_nms_method": "linear",
+    "max_nms": 30000
+  },
+  "diagnostics": {
+    "enabled": false,
+    "initial_evaluation": false
+  },
+  "deterministic": true,
+  "distributed": {
+    "world_size": 2,
+    "gradient_reduction": "sum",
+    "bn_running_history": "ordered_local_microbatches",
+    "accumulation_steps": 1,
+    "physical_gpus": [
+      0,
+      1
+    ]
+  },
+  "calibration": {
+    "architecture": "27-64-ReLU-6",
+    "epochs": 10,
+    "optimizer": "Adam",
+    "lr": 0.001,
+    "weight_decay": 0.0,
+    "batch_size": 65536,
+    "seed": 2026,
+    "negatives_per_image_per_modality": 1024,
+    "ignore_iou_threshold": 0.75,
+    "loss": "varifocal",
+    "vfl_alpha": 0.75,
+    "vfl_gamma": 2.0,
+    "best_metric": "val/rgbt/map50_95",
+    "include_epoch_zero": true,
+    "tie_policy": "earliest",
+    "detector_checkpoint": "${PROJECT_ROOT}/training/best.pt",
+    "frozen_detector": true,
+    "use_original_class_probabilities": true,
+    "workers": 0,
+    "forward_batch_size": 8,
+    "enabled": true,
+    "secondary_best_metric": "val/rgbt/map50_95"
+  },
+  "experiment": {
+    "name": "rt_jsd_sc_vfl_m3fd_640_seed2026",
+    "split_ratio": [
+      8,
+      1,
+      1
+    ],
+    "train_pairs": 3360,
+    "val_pairs": 420,
+    "test_pairs": 420,
+    "paper_exact_split_available": false,
+    "fresh_common_initialization": true,
+    "selection_policy": "Detector and calibrator both use Validation RGBT AP50–95; earliest tie; one selected model evaluates all modes/classes/AP metrics. Test is never used for selection.",
+    "legacy_results_are_not_matched_comparisons": true,
+    "input_resolution": 640,
+    "protocol_status": "snapshot_configured_not_launched",
+    "geometry_policy": "EMA anchors/support copied exactly from fixed detector buffers after each successful optimizer update",
+    "training_recipe_source": {
+      "title": "Consistency-Guided Cross-Modal Attention for Small-Object RGB-IR Detection",
+      "venue": "Sensors 2026, 26(12),3938",
+      "doi": "10.3390/s26123938",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13306344/",
+      "replicated_declared_core_settings": [
+        "image640",
+        "epochs200",
+        "SGD",
+        "lr0.01",
+        "momentum0.937",
+        "weight_decay0.0005",
+        "batch16",
+        "Mosaicdisabledlast10epochs"
+      ],
+      "common_choices_not_claimed_exact_paper_reproduction": [
+        "fixed_seed2026_own811split",
+        "twoGPUs_local8",
+        "workers4_per_rank_8total",
+        "linear_schedule_lrf.01",
+        "warmup3",
+        "existingpaired_flip_scale_translate",
+        "EMA_validation",
+        "Soft_NMS"
+      ]
+    },
+    "common_protocol": "configs/protocol.json",
+    "split_seed": 2026,
+    "training_seed": 2026,
+    "method": "final_rt_jsd_sc_vfl",
+    "runtime_shared_with": null,
+    "comparison_scope": "One final improved model for comparison with other detector architectures",
+    "active_selection_track": "fusion_comparison"
+  }
+}

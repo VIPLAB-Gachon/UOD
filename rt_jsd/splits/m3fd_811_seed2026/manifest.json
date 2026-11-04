@@ -1,0 +1,38 @@
+{
+  "dataset": "M3FD",
+  "split_ratio": [
+    8,
+    1,
+    1
+  ],
+  "split_seed": 2026,
+  "official_split": false,
+  "class_order": [
+    "People",
+    "Car",
+    "Bus",
+    "Lamp",
+    "Motorcycle",
+    "Truck"
+  ],
+  "partitions": {
+    "train": {
+      "pairs": 3360,
+      "id_file": "splits/m3fd_811_seed2026/train.txt",
+      "id_file_sha256": "d6757cba0798d36aefaf3d211477d7432771e6dbded2bc10a42fd8024082c9f5",
+      "original_manifest_sha256": "a045ed5b9cae7b7c9f17892530d56d04f2311c4d58a6a9230be68dc777d121e7"
+    },
+    "val": {
+      "pairs": 420,
+      "id_file": "splits/m3fd_811_seed2026/val.txt",
+      "id_file_sha256": "e0fadb8385d01d7dc6c119e1c82dc01072cd3b98954c06d1fd4577f8e2df7b55",
+      "original_manifest_sha256": "6b7fd9ad432738f951edbfe6a4b644472106eeb2f5b404939c9185c36352d1f6"
+    },
+    "test": {
+      "pairs": 420,
+      "id_file": "splits/m3fd_811_seed2026/test.txt",
+      "id_file_sha256": "f8af3a5844246bee0917cc2b05dcda3fa522077f83bb94c8ca285f758c791cd6",
+      "original_manifest_sha256": "a39e9c0e15f46f7530793f60ac013512b58340e902fca3f788980f89eebf6a2f"
+    }
+  }
+}

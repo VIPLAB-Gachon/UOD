@@ -1,5 +1,8 @@
 # UOD: BFE / IFE / NFE / IFD 전체 학습·추론 코드
 
+> 이 문서는 초기 reference 구현을 설명합니다. 현재 사용하는 RT-JSD + SC + VFL
+> 구조와 M3FD 학습 방법은 [현재 구현 문서](rt_jsd/README.md)를 참고하세요.
+
 ## 먼저 구분할 점
 
 이 프로젝트는 Fan et al., **Unifying RGB and thermal object detection in one detector**, Pattern Recognition 179 (2026), 113902의 **Section 3에 제시된 공유 가중치 구조와 특징 분리 손실을 구현한 연구용 reference implementation**입니다.

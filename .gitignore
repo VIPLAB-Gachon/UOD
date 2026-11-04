@@ -6,6 +6,7 @@ __pycache__/
 *.zip
 runs/
 data/
+!rt_jsd/runtime/third_party/yolov5/data/
 data_audit/
 results/
 *.pt

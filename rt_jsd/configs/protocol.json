@@ -1,0 +1,91 @@
+{
+  "architecture": {
+    "bins": 25,
+    "support_min": -2.0,
+    "support_max": 4.0,
+    "decode_chunk_size": 32768
+  },
+  "selection": {
+    "primary": "val/rgbt/map50_95",
+    "additional": [
+      "val/unimodal_mean/map50_95",
+      "val/rgbt/map50",
+      "val/unimodal_mean/map50"
+    ],
+    "calibration": "val/rgbt/map50_95",
+    "ties": "earliest"
+  },
+  "data": {
+    "resolution": 640,
+    "class_order": [
+      "People",
+      "Car",
+      "Bus",
+      "Lamp",
+      "Motorcycle",
+      "Truck"
+    ],
+    "split_ratio": [
+      8,
+      1,
+      1
+    ],
+    "counts": [
+      3360,
+      420,
+      420
+    ],
+    "split_seed": 2026,
+    "official_split": false
+  },
+  "training": {
+    "epochs": 200,
+    "batch_size": 16,
+    "micro_batch_size": 8,
+    "optimizer": "SGD",
+    "lr0": 0.01,
+    "momentum": 0.937,
+    "weight_decay": 0.0005,
+    "nominal_batch_size": 16,
+    "amp": true,
+    "grad_clip": 10.0
+  },
+  "loss": {
+    "feature_objective": "hinge",
+    "alpha": 0.1,
+    "alpha_start_epoch": 3.0,
+    "alpha_ramp_epochs": 5.0,
+    "detection": {
+      "box": 0.05,
+      "cls": 0.5,
+      "cls_pw": 1.0,
+      "obj": 1.0,
+      "obj_pw": 1.0,
+      "iou_t": 0.2,
+      "anchor_t": 4.0,
+      "fl_gamma": 0.0,
+      "label_smoothing": 0.0
+    },
+    "localization": {
+      "dfl_weight": 0.01,
+      "min_teacher_iou": 0.7,
+      "min_iou_gap": 0.1,
+      "temperature": 1.0,
+      "edge_gate": "gt_better"
+    }
+  },
+  "postprocess": {
+    "score_threshold": 0.001,
+    "iou_threshold": 0.6,
+    "max_detections": 300,
+    "method": "soft_nms",
+    "soft_nms_method": "linear",
+    "max_nms": 30000
+  },
+  "phase": "detector_then_frozen_score_calibration_with_vfl",
+  "excluded_proposals": [
+    "end_to_end_joint_training",
+    "S_X_architecture_variants",
+    "C3_reduction"
+  ]
+}
