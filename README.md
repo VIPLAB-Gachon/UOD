@@ -1,10 +1,13 @@
 # RT-JSD: RGB and Thermal Object Detection
 
-현재 M3FD 실험에 사용하는 **RT-JSD + Score Calibrator(SC) + Varifocal Loss(VFL)**
+현재 M3FD 비교에 사용하는 **Ours-P2 (YOLOv5s + RT-JSD)**의 코드, 설정과
+검증에서 선택한 E184 EMA 체크포인트는 [`rt_jsd_p2/`](rt_jsd_p2/README.md)에 있습니다.
+
+이전 **RT-JSD + Score Calibrator(SC) + Varifocal Loss(VFL)**
 구현은 [`rt_jsd/`](rt_jsd/README.md)에 있습니다. 실행 방법, 고정 split 목록,
 학습 설정과 소스 provenance를 함께 포함합니다. 데이터와 체크포인트는 포함하지 않습니다.
 
-## 현재 구조
+## 이전 RT-JSD + SC/VFL 구조
 
 ```text
 RGB ──────┐                    ┌─ RGB Neck ─────┐
